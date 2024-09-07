@@ -1,0 +1,11 @@
+1) we need to install the lib: virtualenv
+
+windows py -m pip install virtualenv
+
+2) then we want to created the virtual environment
+
+windows py -m venv venv
+
+3) activate the virtual environment
+
+ windows venv\scripts
