@@ -78,6 +78,28 @@ def search_coupon_by_code(code):
     return jsonify({"error": "Coupon not found"}), 404
 
 
+# GET endpoint to return the entire catalog
+@app.get("/api/catalog")
+def get_catalog():
+    cursor = db.catalog.find({})
+    catalog = [prod for prod in cursor]
+    return jsonify(catalog)
+
+# POST endpoint to save a new product
+@app.post("/api/catalog")
+def save_product():
+    new_product = request.get_json()
+    db.catalog.insert_one(new_product)
+    return jsonify({"message": "Product added successfully", "product": new_product}), 201
+
+# GET endpoint to filter products by category
+@app.get("/api/catalog/<category>")
+def get_products_by_category(category):
+    cursor = db.catalog.find({"category": category})
+    filtered_products = [prod for prod in cursor]
+    return jsonify(filtered_products)
+
+
 
 app.run(debug=True)   
 """
