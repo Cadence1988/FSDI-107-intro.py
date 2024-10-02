@@ -39,5 +39,20 @@ def get_products_by_category(category):
     filtered_products = [product for product in catalog if product["category"].lower() == category.lower()]
     return jsonify(filtered_products)
 
+@app.get('/api/products/price/<int:min_price>/<int:max_price>')
+def get_products_by_price(min_price, max_price):
+    filtered_products = [product for product in catalog if min_price <= product["price"] <= max_price]
+    return jsonify(filtered_products)
+
+@app.get('/api/products/search/<string:title>')
+def search_product_by_title(title):
+    product = next((prod for prod in catalog if title.lower() in prod["name"].lower()), None)
+    if product:
+        return jsonify(product)
+    return jsonify({"error": "Product not found"}), 404
+
+
+
+
 if __name__ == "__main__":
     app.run(debug=True)
