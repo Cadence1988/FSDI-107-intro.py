@@ -82,7 +82,7 @@ def search_coupon_by_code(code):
 @app.get("/api/catalog")
 def get_catalog():
     cursor = db.catalog.find({})
-    catalog = [prod for prod in cursor]
+    catalog = [fix_id(prod) for prod in cursor]
     return jsonify(catalog)
 
 # POST endpoint to save a new product
