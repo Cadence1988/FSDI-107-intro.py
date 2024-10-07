@@ -37,6 +37,7 @@ def read_products():
     return json.dumps(catalog)    
 
 
+
 @app.post("/api/products")
 def save_products():
     item = request.get_json()    
