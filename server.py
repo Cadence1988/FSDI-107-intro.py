@@ -41,7 +41,6 @@ def read_products():
 @app.post("/api/products")
 def save_products():
     item = request.get_json()    
-    #products.append(item)
     db.catalog.insert_one(item)
     return json.dumps(fix_id(item))
 
@@ -69,14 +68,14 @@ def get_coupons():
 def save_coupon():
     coupon = request.get_json()
     db.coupons.insert_one(coupon)
-    return jsonify({"message": "Coupon added successfully", "coupon": coupon}), 201
+    return json.dumps({"message": "Coupon added successfully", "coupon": coupon}), 201
 
 @app.get("/api/coupons/search/<string:code>")
 def search_coupon_by_code(code):
     coupon = db.coupons.find_one({"code": code})
     if coupon:
         return json.dumps(fix_id(coupon))
-    return jsonify({"error": "Coupon not found"}), 404
+    return json.dumps({"error": "Coupon not found"}), 404
 
 
 # GET endpoint to return the entire catalog
@@ -84,21 +83,21 @@ def search_coupon_by_code(code):
 def get_catalog():
     cursor = db.catalog.find({})
     catalog = [fix_id(prod) for prod in cursor]
-    return jsonify(catalog)
+    return json.dumps(catalog)
 
 # POST endpoint to save a new product
 @app.post("/api/catalog")
 def save_product():
     new_product = request.get_json()
     db.catalog.insert_one(new_product)
-    return jsonify({"message": "Product added successfully", "product": new_product}), 201
+    return json.dumps({"message": "Product added successfully", "product": new_product}), 201
 
 # GET endpoint to filter products by category
 @app.get("/api/catalog/<category>")
 def get_products_by_category(category):
     cursor = db.catalog.find({"category": category})
     filtered_products = [prod for prod in cursor]
-    return jsonify(filtered_products)
+    return json.dumps(filtered_products)
 
 
 
